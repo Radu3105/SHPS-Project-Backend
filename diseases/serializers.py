@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Disease, Symptom
 
+
 class SymptomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Symptom
@@ -12,4 +13,4 @@ class DiseaseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Disease
-        fields = ['id', 'name', 'symptoms']
+        fields = ['id', 'name', 'type', 'symptoms']
