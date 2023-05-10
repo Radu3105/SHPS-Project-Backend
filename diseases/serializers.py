@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Disease, Symptom
+from .models import Disease, Question, Symptom
 
 
 class SymptomSerializer(serializers.ModelSerializer):
@@ -14,3 +14,9 @@ class DiseaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Disease
         fields = ['id', 'name', 'type', 'symptoms']
+
+
+class QuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = ['text']
