@@ -5,7 +5,7 @@ from .models import Disease, Question, Symptom
 class SymptomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Symptom
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'question']
 
 
 class DiseaseSerializer(serializers.ModelSerializer):
@@ -19,4 +19,4 @@ class DiseaseSerializer(serializers.ModelSerializer):
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        fields = ['text']
+        fields = ['id', 'text', 'symptom']

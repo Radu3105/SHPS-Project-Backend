@@ -9,12 +9,15 @@ class Symptom(models.Model):
     def __str__(self):
         return self.name
 
+
 class Question(models.Model):
     text = models.TextField()
-    symptom = models.OneToOneField(Symptom, on_delete=models.CASCADE, related_name='question')
+    symptom = models.OneToOneField(
+        Symptom, on_delete=models.CASCADE, related_name='question')
 
     def __str__(self):
         return self.text
+
 
 class DiseaseType(models.Model):
     name = models.CharField(max_length=50)
