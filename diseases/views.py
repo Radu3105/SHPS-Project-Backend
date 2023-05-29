@@ -8,7 +8,7 @@ from rest_framework import status
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 import random
-
+import joblib
 
 class DiseaseAPIView(generics.ListCreateAPIView):
     serializer_class = DiseaseSerializer
@@ -119,3 +119,28 @@ class SubmitDataView(APIView):
     def post(self, request):
         symptoms = request.data.get("symptoms")
         return Response(symptoms)
+
+
+class PredictDiseaseView(APIView):
+    
+    def post(self, request):
+        model = joblib.load('./training/decision_tree_model.pkl')
+        symptoms = request.data.get("symptoms")
+        list_of_symptoms = Symptom.objects.all()
+        symptom_serializer = SymptomSerializer(list_of_symptoms, many=True)
+        lst_of_symptoms = []
+        for symptom in symptom_serializer.data:
+            lst_of_symptoms.append(symptom['name'])
+        indices = []
+        for symptom in symptoms:
+            for i in range(len(lst_of_symptoms)):
+                if symptom['name'] == lst_of_symptoms[i]:
+                    indices.append(i)
+        data = [[]]
+        for i in range(132):
+            data[0].append(0)
+        for i in range(len(indices)):
+            data[0][indices[i]] = 1
+        y_pred = model.predict(data)
+        return Response({'result: ': y_pred})
+    
