@@ -1,10 +1,9 @@
+from django import forms
 from django.contrib import admin
-from .models import Disease, Question, Symptom, DiseaseType, Specialization, Doctor
+from .models import Disease, Symptom, Doctor, Specialization
 
-# Register your models here.
+
 admin.site.register(Symptom)
-admin.site.register(DiseaseType)
+admin.site.register(Doctor)
 admin.site.register(Disease)
 admin.site.register(Specialization)
-admin.site.register(Doctor)
-admin.site.register(Question)

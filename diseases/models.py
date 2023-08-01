@@ -1,7 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
 
 class Symptom(models.Model):
     name = models.CharField(max_length=100)
@@ -10,34 +8,8 @@ class Symptom(models.Model):
         return self.name
 
 
-class Question(models.Model):
-    text = models.TextField()
-    symptom = models.OneToOneField(
-        Symptom, on_delete=models.CASCADE, related_name='question')
-
-    def __str__(self):
-        return self.text
-
-
-class DiseaseType(models.Model):
-    name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.name
-
-
-class Disease(models.Model):
-    name = models.CharField(max_length=50)
-    type = models.ForeignKey(DiseaseType, on_delete=models.CASCADE)
-    symptoms = models.ManyToManyField(Symptom, related_name='symptom')
-
-    def __str__(self):
-        return self.name
-
-
 class Specialization(models.Model):
-    name = models.CharField(max_length=50)
-    disease_type = models.ForeignKey(DiseaseType, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
@@ -46,10 +18,32 @@ class Specialization(models.Model):
 class Doctor(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    specialization_id = models.ForeignKey(
-        Specialization, on_delete=models.CASCADE)
-    disease_type = models.ManyToManyField(
-        DiseaseType, related_name="disease_type")
+    gender = models.CharField(max_length=1, choices=[
+                              ('M', 'Male'), ('F', 'Female')])
+    date_of_birth = models.DateField()
+    country = models.CharField(max_length=50)
+    city = models.CharField(max_length=50)
+    specialization = models.ManyToManyField(
+        Specialization, related_name='doctors', max_length=50)
+    profile_picture = models.ImageField(blank=True)
+    phone_number = models.CharField(max_length=12)
+    email_address = models.EmailField()
+    location_address = models.CharField(max_length=200)
+    distance_to_location = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
+
+class Disease(models.Model):
+    name = models.CharField(max_length=50)
+    doctor_specialization = models.ForeignKey(
+        Specialization, related_name='diseases', on_delete=models.CASCADE)
+    symptoms = models.ManyToManyField(Symptom, related_name='symptom')
+    description = models.TextField(default="")
+    prognosis_details = models.TextField(default="")
+    treatement = models.TextField(default="")
+    additional_resources = models.TextField(blank=True, default="")
 
     def __str__(self):
         return self.name

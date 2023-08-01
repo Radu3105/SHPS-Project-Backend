@@ -6,7 +6,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'shps.settings')
 django.setup()
 
-from diseases.models import Symptom, Disease, DiseaseType  # Replace with your actual app's name
+from diseases.models import Symptom, Disease, Specialization  # Replace with your actual app's name
 import sys
 sys.path.append('/path/to/training')
 
@@ -31,13 +31,15 @@ def populate_db_symptoms():
         Symptom.objects.create(name=symptoms[i])
 
 
+# !! For populating diseases with symptoms look on google for symptoms for each disease in here:
 def populate_db_diseases():
-    disease_type, created = DiseaseType.objects.get_or_create(name="Cardiovascular")
+    s, created = Specialization.objects.get_or_create(name="Cardiologist")
     for d in diseases:
-        Disease.objects.create(name=d, type=disease_type)
+        Disease.objects.create(name=d, doctor_specialization=s)
+
 
 # Uncomment to populate different db models
 # ==========================================
 
 # populate_db_symptoms()
-# populate_db_diseases()
+populate_db_diseases()

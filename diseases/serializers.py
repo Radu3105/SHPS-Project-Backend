@@ -1,22 +1,29 @@
 from rest_framework import serializers
-from .models import Disease, Question, Symptom
+from .models import Disease, Doctor, Symptom, Specialization
 
 
 class SymptomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Symptom
-        fields = ['id', 'name', 'question']
+        fields = ['id', 'name']
+
+
+class DoctorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Doctor
+        fields = ['id', 'first_name', 'last_name', 'gender', 'date_of_birth', 'country', 'city', 'specialization', 'profile_picture', 'phone_number', 'email_address', 'location_address', 'distance_to_location']
+
+
+class SpecializationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Specialization
+        fields = ['id', 'name']
 
 
 class DiseaseSerializer(serializers.ModelSerializer):
     symptoms = SymptomSerializer(many=True, read_only=True)
+    doctor_specialization = SpecializationSerializer(read_only=True)
 
     class Meta:
         model = Disease
-        fields = ['id', 'name', 'type', 'symptoms']
-
-
-class QuestionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Question
-        fields = ['id', 'text', 'symptom']
+        fields = ['id', 'name', 'doctor_specialization', 'symptoms', 'description', 'prognosis_details', 'treatement', 'additional_resources']
