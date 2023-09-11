@@ -9,9 +9,11 @@ class SymptomSerializer(serializers.ModelSerializer):
 
 
 class DoctorSerializer(serializers.ModelSerializer):
+    specialization_name = serializers.StringRelatedField(source='specialization.name')
+
     class Meta:
         model = Doctor
-        fields = ['id', 'first_name', 'last_name', 'gender', 'date_of_birth', 'country', 'city', 'specialization', 'profile_picture', 'phone_number', 'email_address', 'location_address', 'distance_to_location']
+        fields = ['id', 'first_name', 'last_name', 'gender', 'date_of_birth', 'country', 'city', 'specialization', 'specialization_name', 'profile_picture', 'phone_number', 'email_address', 'location_address', 'geolocation']
 
 
 class SpecializationSerializer(serializers.ModelSerializer):
